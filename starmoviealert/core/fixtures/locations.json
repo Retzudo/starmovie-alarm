@@ -1,0 +1,44 @@
+[
+  {
+    "model": "core.starmovie",
+    "pk": 1,
+    "fields": {
+      "location": "Regau"
+    }
+  },
+  {
+    "model": "core.starmovie",
+    "pk": 2,
+    "fields": {
+      "location": "Liezen"
+    }
+  },
+  {
+    "model": "core.starmovie",
+    "pk": 3,
+    "fields": {
+      "location": "Peuerbach"
+    }
+  },
+  {
+    "model": "core.starmovie",
+    "pk": 4,
+    "fields": {
+      "location": "Ried"
+    }
+  },
+  {
+    "model": "core.starmovie",
+    "pk": 5,
+    "fields": {
+      "location": "Steyr"
+    }
+  },
+  {
+    "model": "core.starmovie",
+    "pk": 6,
+    "fields": {
+      "location": "Wels"
+    }
+  }
+]
