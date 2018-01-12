@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <title>{% block title %}Starmovie Alert{% endblock %}</title>
+</head>
+<body>
+    <nav class="navbar is-light" role="navigation" aria-label="main navigation">
+        <div class="navbar-brand">
+            <a class="navbar-item" href="{% url 'index' %}">Starmovie Alert</a>
+            
+            <button class="button navbar-burger" id="burger-menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+        
+        <div class="navbar-menu" id="navbar-menu">
+            <div class="navbar-end">
+                <a href="{% url 'login' %}" class="navbar-item">
+                    <span><i class="fa fa-sign-in"></i> Log in</span>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    {% block body %}{% endblock %}
+
+    <script>
+        (function (){
+            var $burgerButton = document.getElementById('burger-menu');
+            var $menu = document.getElementById('navbar-menu');
+            $burgerButton.addEventListener('click', function (event) {
+                $burgerButton.classList.toggle('is-active');
+                $menu.classList.toggle('is-active');
+            });
+        }());
+    </script>
+    {% block scripts %}{% endblock %}
+</body>
+</html>

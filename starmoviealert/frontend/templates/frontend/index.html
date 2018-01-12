@@ -1,0 +1,15 @@
+{% extends 'frontend/master.html' %}
+
+{% block body %}
+    <section class="section">
+        <div class="container">
+            <div class="columns is-multiline">
+                {% for starmovie in starmovies %}
+                    <div class="column is-one-third">
+                        {{ starmovie.location }}
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+{% endblock %}
