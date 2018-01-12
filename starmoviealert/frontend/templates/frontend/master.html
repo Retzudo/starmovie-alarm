@@ -22,9 +22,15 @@
         
         <div class="navbar-menu" id="navbar-menu">
             <div class="navbar-end">
-                <a href="{% url 'login' %}" class="navbar-item">
-                    <span><i class="fa fa-sign-in"></i> Log in</span>
-                </a>
+                {% if user.is_authenticated %}
+                    <a href="{% url 'settings' %}" class="navbar-item">
+                        <span><i class="fa fa-profile"></i> Settings</span>
+                    </a>
+                {% else %}
+                    <a href="{% url 'login' %}" class="navbar-item">
+                        <span><i class="fa fa-sign-in"></i> Log in</span>
+                    </a>
+                {% endif %}
             </div>
         </div>
     </nav>

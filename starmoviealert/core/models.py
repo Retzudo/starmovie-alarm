@@ -20,7 +20,7 @@ class Starmovie(models.Model):
 
 
 class Movie(models.Model):
-    starmovie = models.ForeignKey(Starmovie, on_delete=models.CASCADE, related_name='movies')
+    locations = models.ManyToManyField(Starmovie, related_name='movies')
     movie_id = models.IntegerField(primary_key=True)
     title = models.CharField(max_length=255)
     is_ov = models.BooleanField(default=False)
@@ -39,6 +39,7 @@ class ShowingDate(models.Model):
 
 class UserSettings(models.Model):
     user = models.OneToOneField(get_user_model(), on_delete=models.CASCADE, related_name='settings')
+    favourite_location = models.ForeignKey(Starmovie, null=True, on_delete=models.SET_NULL, related_name='favourited_by_settings')
     receive_alert_emails = models.BooleanField(default=True)
 
     class Meta:

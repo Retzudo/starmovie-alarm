@@ -1,0 +1,13 @@
+{% extends 'frontend/master.html' %}
+
+{% block body %}
+    <section class="section">
+        <div class="container">
+            <ul>
+                {% for movie in movies %}
+                    <li>{{ movie }} {% if movie.is_ov %}<span class="tag is-info">OV</span>{% endif %}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </section>
+{% endblock %}

@@ -6,7 +6,7 @@
             <div class="columns is-multiline">
                 {% for starmovie in starmovies %}
                     <div class="column is-one-third">
-                        {{ starmovie.location }}
+                        <a href="{% url 'show_movies' location=starmovie.location %}">{{ starmovie.location }}</a>
                     </div>
                 {% endfor %}
             </div>
