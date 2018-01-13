@@ -20,7 +20,6 @@ class Starmovie(models.Model):
 
 
 class Movie(models.Model):
-    locations = models.ManyToManyField(Starmovie, related_name='movies')
     movie_id = models.IntegerField(primary_key=True)
     title = models.CharField(max_length=255)
     is_ov = models.BooleanField(default=False)
@@ -32,6 +31,7 @@ class Movie(models.Model):
 class ShowingDate(models.Model):
     movie = models.ForeignKey(Movie, on_delete=models.CASCADE, related_name='showing_dates')
     date = models.DateTimeField()
+    location = models.ForeignKey(Starmovie, on_delete=models.CASCADE, related_name='showing_dates')
 
     def __str__(self):
         return str(self.date)

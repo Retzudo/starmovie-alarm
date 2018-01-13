@@ -3,6 +3,7 @@ from datetime import datetime
 import pytz
 import requests
 from bs4 import BeautifulSoup
+from django.conf import settings
 from django.core.management.base import BaseCommand
 
 from core.models import Starmovie, Movie
@@ -46,13 +47,11 @@ class Command(BaseCommand):
                     is_ov=title.lower().startswith('ov:'),
                 )
 
-            starmovie.movies.add(movie)
-
             for time in movie_card.find_all(class_='movie-card__time'):
                 timestamp = time['data-program-time']
-                datetime_ = datetime.fromtimestamp(int(timestamp), tz=pytz.timezone('Europe/Vienna'))
+                datetime_ = datetime.fromtimestamp(int(timestamp), tz=pytz.timezone(settings.TIME_ZONE))
 
-                movie.showing_dates.create(date=datetime_)
+                movie.showing_dates.create(date=datetime_, location=starmovie)
 
     def handle(self, *args, **options):
         for starmovie in Starmovie.objects.all():
