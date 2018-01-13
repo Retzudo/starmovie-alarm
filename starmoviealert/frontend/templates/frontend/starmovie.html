@@ -1,13 +1,51 @@
 {% extends 'frontend/master.html' %}
 
+{% block styles %}
+    <style>
+    .ov-badge {
+        position: absolute;
+        top: 0;
+        right: 0;
+        background: #00d875;
+        z-index: 1;
+        margin: 1em;
+        transform: rotate(10deg);
+        border-radius: 50%;
+        color: white;
+        font-weight: bold;
+        width: 60px;
+        height: 60px;
+        text-align: center;
+        line-height: 60px;
+        font-size: 1.4em;
+    }
+    </style>
+{% endblock %}
+
 {% block body %}
     <section class="section">
         <div class="container">
-            <ul>
+            <div class="columns is-multiline">
                 {% for movie in movies %}
-                    <li>{{ movie }} {% if movie.is_ov %}<span class="tag is-info">OV</span>{% endif %}</li>
+                    <div class="column is-3">
+                        <div class="card">
+                            <div class="card-image">
+                                {% if movie.is_ov %}
+                                    <div class="ov-badge">
+                                        OV
+                                    </div>
+                                {% endif %}
+                                <figure class="image">
+                                    <img src="https://www.starmovie.at/fileadmin/_processed_/e/e/csm_cocoplakat_63f11fc7c8.jpg" alt="{{ movie.title }} Poster">
+                                </figure>
+                            </div>
+                            <div class="card-content">
+                                {{ movie.title }}
+                            </div>
+                        </div>
+                    </div>
                 {% endfor %}
-            </ul>
+            </div>
         </div>
     </section>
 {% endblock %}

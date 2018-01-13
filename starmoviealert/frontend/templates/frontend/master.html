@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <title>{% block title %}Starmovie Alert{% endblock %}</title>
+    {% block styles %}{% endblock %}
 </head>
 <body>
     <nav class="navbar is-light" role="navigation" aria-label="main navigation">
@@ -28,7 +29,7 @@
                     </a>
                 {% else %}
                     <a href="{% url 'login' %}" class="navbar-item">
-                        <span><i class="fa fa-sign-in"></i> Log in</span>
+                        <span class="icon"><i class="fa fa-sign-in"></i></span> Log in
                     </a>
                 {% endif %}
             </div>

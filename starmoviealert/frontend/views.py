@@ -16,7 +16,7 @@ def index(request):
 
 
 def show_movies(request, location):
-    starmovie = get_object_or_404(Starmovie, location=location)
+    get_object_or_404(Starmovie, location=location)
 
     movies = Movie.objects.filter(
         showing_dates__date__gte=datetime.now(pytz.timezone(settings.TIME_ZONE)),
