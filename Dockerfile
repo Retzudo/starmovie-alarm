@@ -1,9 +1,7 @@
 FROM python
 
-RUN pip install pipenv
-
 COPY . /starmoviealert
-RUN cd /starmoviealert && pipenv install --system
+RUN pip install -r /starmovie/requirements.txt
 RUN cd /starmoviealert/starmoviealert && python manage.py collectstatic --no-input
 
 WORKDIR /starmoviealert/starmoviealert
