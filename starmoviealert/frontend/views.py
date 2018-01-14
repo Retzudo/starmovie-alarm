@@ -2,12 +2,14 @@ from datetime import datetime
 
 import pytz
 from django.conf import settings
+from django.contrib.auth import login, authenticate
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, get_object_or_404
-from django.views.generic import UpdateView, CreateView, TemplateView
+from django.views.generic import UpdateView, TemplateView, FormView
 
 from core.models import Starmovie, Movie
 from frontend import forms
+from frontend.forms import UserCreationForm
 
 
 def index(request):
@@ -45,5 +47,13 @@ class SettingsView(LoginRequiredMixin, UpdateView):
         return self.request.user.settings
 
 
-class RegisterView(CreateView):
-    pass
+class RegisterView(FormView):
+    template_name = 'frontend/register.html'
+    form_class = UserCreationForm
+    success_url = '/accounts/settings'
+
+    def form_valid(self, form):
+        form.save()
+        user = authenticate(username=form.cleaned_data['username'], password=form.cleaned_data['password1'])
+        login(self.request, user)
+        return super().form_valid(form)

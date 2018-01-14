@@ -11,11 +11,14 @@
                     <div class="field-body">
                         <div class="field">
                             <div class="control has-icons-left">
-                                <input type="text" class="input" id="{{ form.username.auto_id }}" name="{{ form.username.name }}">
+                                <input type="text" class="input{% if form.username.errors %} is-danger{% endif %}" id="{{ form.username.auto_id }}" name="{{ form.username.name }}" required>
                                 <span class="icon is-small is-left">
                                     <i class="fa fa-user"></i>
                                 </span>
                             </div>
+                            {% for error in form.username.errors %}
+                                <p class="help is-danger">{{ error }}</p>
+                            {% endfor %}
                         </div>
                     </div>
                 </div>
@@ -27,11 +30,14 @@
                     <div class="field-body">
                         <div class="field">
                             <div class="control has-icons-left">
-                                <input type="password" class="input" id="{{ form.password.auto_id }}" name="{{ form.password.name }}">
+                                <input type="password" class="input{% if form.username.errors %} is-danger{% endif %}" id="{{ form.password.auto_id }}" name="{{ form.password.name }}" required>
                                 <span class="icon is-small is-left">
                                     <i class="fa fa-lock"></i>
                                 </span>
                             </div>
+                            {% for error in form.username.errors %}
+                                <p class="help is-danger">{{ error }}</p>
+                            {% endfor %}
                         </div>
                     </div>
                 </div>

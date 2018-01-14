@@ -1,0 +1,102 @@
+{% extends 'frontend/master.html' %}
+
+{% block body %}
+    <section class="section">
+        <div class="container">
+            <form action="{% url 'register' %}" method="post">
+                <p class="help is-danger">
+                    {{ form.non_field_errors }}
+                </p>
+                <div class="field is-horizontal">
+                    <div class="field-label">
+                        <label for="{{ form.username.id_for_label }}" class="label">{{ form.username.label }}</label>
+                    </div>
+                    <div class="field-body">
+                        <div class="field">
+                            <div class="control has-icons-left">
+                                <input type="text" class="input{% if form.username.errors %} is-danger{% endif %}" id="{{ form.username.auto_id }}" name="{{ form.username.name }}" required>
+                                <span class="icon is-small is-left">
+                                    <i class="fa fa-user"></i>
+                                </span>
+                            </div>
+                            {% for error in form.username.errors %}
+                                <p class="help is-danger">{{ error }}</p>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="field is-horizontal">
+                    <div class="field-label">
+                        <label for="{{ form.email.id_for_label }}" class="label">{{ form.email.label }}</label>
+                    </div>
+                    <div class="field-body">
+                        <div class="field">
+                            <div class="control has-icons-left">
+                                <input type="text" class="input{% if form.email.errors %} is-danger{% endif %}" id="{{ form.email.auto_id }}" name="{{ form.email.name }}" required>
+                                <span class="icon is-small is-left">
+                                    <i class="fa fa-envelope"></i>
+                                </span>
+                            </div>
+                            {% for error in form.email.errors %}
+                                <p class="help is-danger">{{ error }}</p>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="field is-horizontal">
+                    <div class="field-label">
+                        <label for="{{ form.password1.id_for_label }}" class="label">{{ form.password1.label }}</label>
+                    </div>
+                    <div class="field-body">
+                        <div class="field">
+                            <div class="control has-icons-left">
+                                <input type="password" class="input{% if form.password1.errors %} is-danger{% endif %}" id="{{ form.password1.auto_id }}" name="{{ form.password1.name }}" required>
+                                <span class="icon is-small is-left">
+                                    <i class="fa fa-lock"></i>
+                                </span>
+                            </div>
+                            {% for error in form.password1.errors %}
+                                <p class="help is-danger">{{ error }}</p>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="field is-horizontal">
+                    <div class="field-label">
+                        <label for="{{ form.password2.id_for_label }}" class="label">{{ form.password2.label }}</label>
+                    </div>
+                    <div class="field-body">
+                        <div class="field">
+                            <div class="control has-icons-left">
+                                <input type="password" class="input{% if form.password2.errors %} is-danger{% endif %}" id="{{ form.password2.auto_id }}" name="{{ form.password2.name }}" required>
+                                <span class="icon is-small is-left">
+                                    <i class="fa fa-lock"></i>
+                                </span>
+                            </div>
+                            {% for error in form.password2.errors %}
+                                <p class="help is-danger">{{ error }}</p>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="field is-horizontal">
+                    <div class="field-label"></div>
+                    <div class="field-body">
+                        <div class="field">
+                            <div class="control">
+                                <button class="button is-link">Register</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {% csrf_token %}
+            </form>
+        </div>
+    </section>
+{% endblock %}
