@@ -33,6 +33,7 @@ class ShowingDate(models.Model):
     movie = models.ForeignKey(Movie, on_delete=models.CASCADE, related_name='showing_dates')
     date = models.DateTimeField()
     location = models.ForeignKey(Starmovie, on_delete=models.CASCADE, related_name='showing_dates')
+    details_url = models.URLField()
 
     def __str__(self):
         return str(self.date)

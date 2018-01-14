@@ -1,3 +1,4 @@
+from collections import defaultdict
 from datetime import datetime
 from typing import List
 
@@ -48,6 +49,9 @@ class Command(BaseCommand):
             title = movie_card.find(class_='movie-card__header').string
             id = int(movie_card.find(class_='movie-card__rating')['data-movie-id'])
             poster_url = self._get_poster_url(movie_card)
+            if poster_url.startswith('/'):
+                poster_url = 'https://www.starmovie.at' + poster_url
+
             try:
                 movie = Movie.objects.get(pk=id)
                 self.stdout.write('Movie "{}" already exists'.format(title))
@@ -60,6 +64,10 @@ class Command(BaseCommand):
                     poster_url=poster_url,
                 )
 
+            details_url = movie_card.find(class_='movie-card__detail-link')['href']
+            if details_url.startswith('/'):
+                details_url = 'https://www.starmovie.at' + details_url
+
             for time in movie_card.find_all(class_='movie-card__time'):
                 timestamp = time['data-program-time']
                 datetime_ = datetime.fromtimestamp(int(timestamp), tz=pytz.timezone(settings.TIME_ZONE))
@@ -67,7 +75,7 @@ class Command(BaseCommand):
                 try:
                     movie.showing_dates.get(date=datetime_, location=starmovie)
                 except ShowingDate.DoesNotExist:
-                    date = movie.showing_dates.create(date=datetime_, location=starmovie)
+                    date = movie.showing_dates.create(date=datetime_, location=starmovie, details_url=details_url)
                     dates_created.append(date)
                     print('Showing date created in {}'.format(starmovie.location), datetime_)
 
@@ -91,7 +99,8 @@ class Command(BaseCommand):
             message = 'Hello!\n\nStarmovie {} is showing (a) new movie(s) in English!\n\n'.format(location.location)
 
             for date in for_location:
-                message += 'Title: {}\nDate: {}\n\n'.format(date.movie.title, date.date)
+                if date.movie.is_ov:
+                    message += 'Title: {}\nDate: {}\nURL: {}\n\n'.format(date.movie.title, date.date, date.details_url)
 
             send_mass_mail(((
                 'New OV Movies!',
