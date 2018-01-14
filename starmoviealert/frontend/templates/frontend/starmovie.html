@@ -30,7 +30,7 @@
                     <div class="column is-3">
                         <div class="card">
                             <div class="card-image">
-                                {% if movie.is_ov %}
+                                {% if movie.is_ov and not user.settings.only_show_ov%}
                                     <div class="ov-badge">
                                         OV
                                     </div>

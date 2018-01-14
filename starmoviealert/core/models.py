@@ -42,6 +42,7 @@ class UserSettings(models.Model):
     user = models.OneToOneField(get_user_model(), on_delete=models.CASCADE, related_name='settings')
     favourite_location = models.ForeignKey(Starmovie, null=True, on_delete=models.SET_NULL, related_name='favourited_by_settings')
     receive_alert_emails = models.BooleanField(default=True)
+    only_show_ov = models.BooleanField(default=False)
 
     class Meta:
         verbose_name_plural = 'User settings'

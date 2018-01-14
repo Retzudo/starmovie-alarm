@@ -21,7 +21,10 @@ def show_movies(request, location):
     movies = Movie.objects.filter(
         showing_dates__date__gte=datetime.now(pytz.timezone(settings.TIME_ZONE)),
         showing_dates__location__location__iexact=location,
-    ).distinct()
+    ).distinct().order_by('-is_ov', 'title')
+
+    if request.user.is_authenticated and request.user.settings.only_show_ov:
+        movies = movies.filter(is_ov=True)
 
     return render(request, 'frontend/starmovie.html', context={
         'movies': movies
