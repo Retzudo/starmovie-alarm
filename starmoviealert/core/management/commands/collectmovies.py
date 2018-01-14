@@ -1,9 +1,12 @@
 from datetime import datetime
+from typing import List
 
 import pytz
 import requests
 from bs4 import BeautifulSoup
 from django.conf import settings
+from django.contrib.auth import get_user_model
+from django.core.mail import send_mass_mail
 from django.core.management.base import BaseCommand
 
 from core.models import Starmovie, Movie, ShowingDate
@@ -31,11 +34,12 @@ class Command(BaseCommand):
 
         return srcset[srcset.index('2x') - 1].strip()
 
-    def fetch_movies(self, starmovie: Starmovie):
+    def fetch_movies(self, starmovie: Starmovie) -> List[ShowingDate]:
         url = BASE_URL.format(location=starmovie.location.lower())
         self.stdout.write('URL: {}'.format(url))
         html = requests.get(url).content
         soup = BeautifulSoup(html, 'html.parser')
+        dates_created = []
 
         for movie_card in soup.find_all(class_='movie-card'):
             if 'hidden' in movie_card['class']:
@@ -63,11 +67,46 @@ class Command(BaseCommand):
                 try:
                     movie.showing_dates.get(date=datetime_, location=starmovie)
                 except ShowingDate.DoesNotExist:
-                    movie.showing_dates.create(date=datetime_, location=starmovie)
+                    date = movie.showing_dates.create(date=datetime_, location=starmovie)
+                    dates_created.append(date)
                     print('Showing date created in {}'.format(starmovie.location), datetime_)
 
+        return dates_created
+
+
+    @staticmethod
+    def send_emails(dates_created: List[ShowingDate]):
+        for location in Starmovie.objects.all():
+            users = get_user_model().objects.filter(
+                settings__receive_alert_emails=True,
+                settings__favourite_location=location,
+                email__isnull=False,
+            )
+            if len(users) < 1:
+                continue
+
+            print('Sending to {} users with an e-mail address'.format(len(users)))
+
+            for_location = filter(lambda x: x.location == location, dates_created)
+            message = 'Hello!\n\nStarmovie {} is showing (a) new movie(s) in English!\n\n'.format(location.location)
+
+            for date in for_location:
+                message += 'Title: {}\nDate: {}\n\n'.format(date.movie.title, date.date)
+
+            send_mass_mail(((
+                'New OV Movies!',
+                message,
+                'noreply@starmovie.retzudo.com',
+                [user.email for user in users],
+            ),))
+
+
+
     def handle(self, *args, **options):
+        dates_created = []
         for starmovie in Starmovie.objects.all():
             self.stdout.write('Fetching from location "{}"'.format(starmovie.location))
-            self.fetch_movies(starmovie)
+            dates_created += self.fetch_movies(starmovie)
             self.stdout.write('################################\n\n')
+
+        self.send_emails(dates_created)
