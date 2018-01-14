@@ -44,6 +44,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -87,11 +88,11 @@ else:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
-            'NAME': os.getenv('SMALERT_DB_NAME'),
-            'USER': os.getenv('SMALERT_DB_USER'),
-            'PASSWORD': os.getenv('SMALERT_DB_PASSWORD'),
-            'HOST': os.getenv('SMALERT_DB_HOST'),
-            'PORT': os.getenv('SMALERT_DB_PORT'),
+            'NAME': os.getenv('SMALERT_DB_NAME', 'starmovie'),
+            'USER': os.getenv('SMALERT_DB_USER', 'starmovie'),
+            'PASSWORD': os.getenv('SMALERT_DB_PASSWORD', 'starmovie'),
+            'HOST': os.getenv('SMALERT_DB_HOST', 'starmovie-db'),
+            'PORT': os.getenv('SMALERT_DB_PORT', 5432),
         }
     }
 
@@ -119,6 +120,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, '../static')
 
 if DEBUG:
     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'

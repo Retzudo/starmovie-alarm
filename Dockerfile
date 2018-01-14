@@ -1,9 +1,10 @@
 FROM python
 
-COPY ./starmoviealert /starmoviealert
+RUN pip install pipenv
 
-WORKDIR /starmoviealert
+COPY . /starmoviealert
+RUN cd /starmoviealert && pipenv install --system
+RUN cd /starmoviealert/starmoviealert && python manage.py collectstatic --no-input
 
-RUN pip install --no-cache-dir pipenv && pipenv install
-
-CMD "pipenv run gunicorn starmoviealert.wsgi"
+WORKDIR /starmoviealert/starmoviealert
+CMD ["gunicorn", "--bind", "0.0.0.0:8020", "starmoviealert.wsgi"]

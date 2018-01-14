@@ -11,6 +11,8 @@ django = "*"
 "beautifulsoup4" = "*"
 requests = "*"
 gunicorn = "*"
+"psycopg2" = "*"
+whitenoise = "*"
 
 
 [dev-packages]
