@@ -1,4 +1,3 @@
-from collections import defaultdict
 from datetime import datetime
 from typing import List
 
@@ -81,9 +80,11 @@ class Command(BaseCommand):
 
         return dates_created
 
-
     @staticmethod
     def send_emails(dates_created: List[ShowingDate]):
+        if not dates_created:
+            return
+
         for location in Starmovie.objects.all():
             users = get_user_model().objects.filter(
                 settings__receive_alert_emails=True,
@@ -98,6 +99,9 @@ class Command(BaseCommand):
             for_location = filter(lambda x: x.location == location, dates_created)
             message = 'Hello!\n\nStarmovie {} is showing (a) new movie(s) in English!\n\n'.format(location.location)
 
+            if not for_location:
+                return
+
             for date in for_location:
                 if date.movie.is_ov:
                     message += 'Title: {}\nDate: {}\nURL: {}\n\n'.format(date.movie.title, date.date, date.details_url)
@@ -108,8 +112,6 @@ class Command(BaseCommand):
                 'noreply@starmovie.retzudo.com',
                 [user.email for user in users],
             ),))
-
-
 
     def handle(self, *args, **options):
         dates_created = []

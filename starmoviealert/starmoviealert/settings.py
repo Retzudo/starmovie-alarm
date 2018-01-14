@@ -126,6 +126,7 @@ if DEBUG:
     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 else:
     EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+    EMAIL_USE_TLS = True
     EMAIL_HOST = os.getenv('SMALERT_EMAIL_HOST')
     EMAIL_PORT = os.getenv('SMALERT_EMAIL_PORT')
     EMAIL_HOST_USER = os.getenv('SMALERT_EMAIL_HOST_USER')
