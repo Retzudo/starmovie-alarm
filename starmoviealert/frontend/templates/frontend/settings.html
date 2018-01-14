@@ -3,7 +3,65 @@
 {% block body %}
     <section class="section">
         <div class="container">
-            <h1>Settings</h1>
+            <form action="{% url 'settings' %}" method="post">
+                <div class="field is-horizontal">
+                    <div class="field-label">
+                        <label for="{{ form.favourite_location.id_for_label }}" class="label">{{ form.favourite_location.label }}</label>
+                    </div>
+                    <div class="field-body">
+                        <div class="field">
+                            <div class="control">
+                                <div class="select">
+                                    {{ form.favourite_location }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="field is-horizontal">
+                    <div class="field-label">
+                        <label for="{{ form.receive_alert_emails.id_for_label }}" class="label">Receive alert e-mails</label>
+                    </div>
+                    <div class="field-body">
+                        <div class="field">
+                            <div class="control">
+                                <div class="checkbox">
+                                    <input type="checkbox" class="checkbox" name="{{ form.receive_alert_emails.name }}" id="{{ form.receive_alert_emails.auto_id }}" {% if form.receive_alert_emails.value %}checked{% endif %}>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="field is-horizontal">
+                    <div class="field-label">
+                        <label for="{{ form.only_show_ov.id_for_label }}" class="label">Only show OV movies</label>
+                    </div>
+                    <div class="field-body">
+                        <div class="field">
+                            <div class="control">
+                                <div class="checkbox">
+                                    <input type="checkbox" class="checkbox" name="{{ form.only_show_ov.name }}" id="{{ form.only_show_ov.auto_id }}" {% if form.only_show_ov.value %}checked{% endif %}>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="field is-horizontal">
+                    <div class="field-label"></div>
+                    <div class="field-body">
+                        <div class="field">
+                            <div class="control">
+                                <button class="button is-link">Save</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {% csrf_token %}
+            </form>
         </div>
     </section>
 {% endblock %}

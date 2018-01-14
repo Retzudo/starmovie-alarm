@@ -107,3 +107,12 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
 STATIC_URL = '/static/'
+
+if DEBUG:
+    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+else:
+    EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+    EMAIL_HOST = os.getenv('SMALERT_EMAIL_HOST')
+    EMAIL_PORT = os.getenv('SMALERT_EMAIL_PORT')
+    EMAIL_HOST_USER = os.getenv('SMALERT_EMAIL_HOST_USER')
+    EMAIL_HOST_PASSWORD = os.getenv('SMALERT_EMAIL_HOST_PASSWORD')

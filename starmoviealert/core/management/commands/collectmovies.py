@@ -6,7 +6,7 @@ from bs4 import BeautifulSoup
 from django.conf import settings
 from django.core.management.base import BaseCommand
 
-from core.models import Starmovie, Movie
+from core.models import Starmovie, Movie, ShowingDate
 
 BASE_URL = 'https://www.starmovie.at/star-movie-{location}'
 
@@ -46,7 +46,7 @@ class Command(BaseCommand):
             poster_url = self._get_poster_url(movie_card)
             try:
                 movie = Movie.objects.get(pk=id)
-                self.stdout.write('Movie "{}" already exists. Adding to "{}"'.format(title, starmovie.location))
+                self.stdout.write('Movie "{}" already exists'.format(title))
             except Movie.DoesNotExist:
                 self.stdout.write('Created movie "{}"'.format(self._clean_movie_title(title)))
                 movie = Movie.objects.create(
@@ -60,7 +60,11 @@ class Command(BaseCommand):
                 timestamp = time['data-program-time']
                 datetime_ = datetime.fromtimestamp(int(timestamp), tz=pytz.timezone(settings.TIME_ZONE))
 
-                movie.showing_dates.create(date=datetime_, location=starmovie)
+                try:
+                    movie.showing_dates.get(date=datetime_, location=starmovie)
+                except ShowingDate.DoesNotExist:
+                    movie.showing_dates.create(date=datetime_, location=starmovie)
+                    print('Showing date created in {}'.format(starmovie.location), datetime_)
 
     def handle(self, *args, **options):
         for starmovie in Starmovie.objects.all():
