@@ -94,13 +94,13 @@ class Command(BaseCommand):
             if len(users) < 1:
                 continue
 
-            print('Sending to {} users with an e-mail address'.format(len(users)))
-
             for_location = filter(lambda x: x.location == location, dates_created)
             message = 'Hello!\n\nStarmovie {} is showing (a) new movie(s) in English!\n\n'.format(location.location)
 
             if not for_location:
                 return
+
+            print('Sending to {} users with an e-mail address'.format(len(users)))
 
             for date in for_location:
                 if date.movie.is_ov:
