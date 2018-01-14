@@ -24,10 +24,16 @@
         <div class="navbar-menu" id="navbar-menu">
             <div class="navbar-end">
                 {% if user.is_authenticated %}
-                    <a href="{% url 'settings' %}" class="navbar-item">
-                        <span><i class="fa fa-profile"></i> Settings</span>
+                    <a href="{% url 'profile' %}" class="navbar-item">
+                        <span class="icon"><i class="fa fa-user"></i></span> Profile
+                    </a>
+                    <a href="{% url 'logout' %}" class="navbar-item">
+                        <span class="icon"><i class="fa fa-sign-out"></i></span> Log out
                     </a>
                 {% else %}
+                    <a href="{% url 'register' %}" class="navbar-item">
+                        <span class="icon"><i class="fa fa-pencil"></i></span> Register
+                    </a>
                     <a href="{% url 'login' %}" class="navbar-item">
                         <span class="icon"><i class="fa fa-sign-in"></i></span> Log in
                     </a>

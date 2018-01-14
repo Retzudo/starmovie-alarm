@@ -1,5 +1,54 @@
 {% extends 'frontend/master.html' %}
 
 {% block body %}
-    <p>Login</p>
+    <section class="section">
+        <div class="container">
+            <form action="{% url 'login' %}" method="post">
+                <div class="field is-horizontal">
+                    <div class="field-label">
+                        <label for="{{ form.username.id_for_label }}" class="label">{{ form.username.label }}</label>
+                    </div>
+                    <div class="field-body">
+                        <div class="field">
+                            <div class="control has-icons-left">
+                                <input type="text" class="input" id="{{ form.username.auto_id }}" name="{{ form.username.name }}">
+                                <span class="icon is-small is-left">
+                                    <i class="fa fa-user"></i>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="field is-horizontal">
+                    <div class="field-label">
+                        <label for="{{ form.password.id_for_label }}" class="label">{{ form.password.label }}</label>
+                    </div>
+                    <div class="field-body">
+                        <div class="field">
+                            <div class="control has-icons-left">
+                                <input type="password" class="input" id="{{ form.password.auto_id }}" name="{{ form.password.name }}">
+                                <span class="icon is-small is-left">
+                                    <i class="fa fa-lock"></i>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="field is-horizontal">
+                    <div class="field-label"></div>
+                    <div class="field-body">
+                        <div class="field">
+                            <div class="control">
+                                <button class="button is-link">Log in</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {% csrf_token %}
+            </form>
+        </div>
+    </section>
 {% endblock %}
