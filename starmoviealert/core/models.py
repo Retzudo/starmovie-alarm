@@ -23,6 +23,7 @@ class Movie(models.Model):
     movie_id = models.IntegerField(primary_key=True)
     title = models.CharField(max_length=255)
     is_ov = models.BooleanField(default=False)
+    poster_url = models.URLField(null=True)
 
     def __str__(self):
         return self.title

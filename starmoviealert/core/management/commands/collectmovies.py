@@ -24,6 +24,13 @@ class Command(BaseCommand):
 
         return title.strip()
 
+    @staticmethod
+    def _get_poster_url(movie_card) -> str:
+        img = movie_card.find(class_='movie-card__image')
+        srcset = img['data-srcset'].split()
+
+        return srcset[srcset.index('2x') - 1].strip()
+
     def fetch_movies(self, starmovie: Starmovie):
         url = BASE_URL.format(location=starmovie.location.lower())
         self.stdout.write('URL: {}'.format(url))
@@ -36,6 +43,7 @@ class Command(BaseCommand):
 
             title = movie_card.find(class_='movie-card__header').string
             id = int(movie_card.find(class_='movie-card__rating')['data-movie-id'])
+            poster_url = self._get_poster_url(movie_card)
             try:
                 movie = Movie.objects.get(pk=id)
                 self.stdout.write('Movie "{}" already exists. Adding to "{}"'.format(title, starmovie.location))
@@ -45,6 +53,7 @@ class Command(BaseCommand):
                     pk=id,
                     title=self._clean_movie_title(title),
                     is_ov=title.lower().startswith('ov:'),
+                    poster_url=poster_url,
                 )
 
             for time in movie_card.find_all(class_='movie-card__time'):
