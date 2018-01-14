@@ -10,6 +10,7 @@ url = "https://pypi.python.org/simple"
 django = "*"
 "beautifulsoup4" = "*"
 requests = "*"
+gunicorn = "*"
 
 
 [dev-packages]
