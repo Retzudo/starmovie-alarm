@@ -76,7 +76,7 @@ class Command(BaseCommand):
                 except ShowingDate.DoesNotExist:
                     date = movie.showing_dates.create(date=datetime_, location=starmovie, details_url=details_url)
                     dates_created.append(date)
-                    self.stdout.write('Showing date created in {}'.format(starmovie.location), datetime_)
+                    self.stdout.write('Showing date created in {} {}'.format(starmovie.location, datetime_))
 
         return dates_created
 
