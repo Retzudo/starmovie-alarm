@@ -76,12 +76,11 @@ class Command(BaseCommand):
                 except ShowingDate.DoesNotExist:
                     date = movie.showing_dates.create(date=datetime_, location=starmovie, details_url=details_url)
                     dates_created.append(date)
-                    print('Showing date created in {}'.format(starmovie.location), datetime_)
+                    self.stdout.write('Showing date created in {}'.format(starmovie.location), datetime_)
 
         return dates_created
 
-    @staticmethod
-    def send_emails(dates_created: List[ShowingDate]):
+    def send_emails(self, dates_created: List[ShowingDate]):
         if not dates_created:
             return
 
@@ -94,13 +93,13 @@ class Command(BaseCommand):
             if len(users) < 1:
                 continue
 
-            for_location = filter(lambda x: x.location == location, dates_created)
+            for_location = list(filter(lambda x: x.location == location, dates_created))
             message = 'Hello!\n\nStarmovie {} is showing (a) new movie(s) in English!\n\n'.format(location.location)
 
             if not for_location:
                 return
 
-            print('Sending to {} users with an e-mail address'.format(len(users)))
+            self.stdout.write('Sending notification for {} movie(s) to {} users with an e-mail address'.format(len(for_location), len(users)))
 
             for date in for_location:
                 if date.movie.is_ov:
