@@ -85,7 +85,7 @@ class Command(BaseCommand):
         if not dates_created:
             return
 
-        messages_to_send = []
+        # messages_to_send = []
 
         for location in Starmovie.objects.all():
             # Get all users for this location who have an email address and want to receive alerts.
@@ -112,17 +112,15 @@ class Command(BaseCommand):
             for date in for_location:
                 message += 'Title: {}\nDate: {}\nURL: {}\n\n'.format(date.movie.title, date.date, date.details_url)
 
-            for user in users:
-                message = mail.EmailMessage(
-                    'New OV Movies!',
-                    message,
-                    'Starmovie Alert <noreply@starmovie.retzudo.com>',
-                    user.email
-                )
-                messages_to_send.append(message)
-
-        connection = mail.get_connection()
-        connection.send_messages(messages_to_send)
+            with mail.get_connection() as connection:
+                for user in users:
+                    mail.EmailMessage(
+                        subject='New OV Movies!',
+                        body=message,
+                        from_email='Starmovie Alert <noreply@starmovie.retzudo.com>',
+                        to=[user.email],
+                        connection=connection,
+                    ).send()
 
     def handle(self, *args, **options):
         dates_created = []
