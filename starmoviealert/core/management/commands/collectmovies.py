@@ -100,7 +100,7 @@ class Command(BaseCommand):
 
             # Filter created showing dates by this location and OV only.
             for_location = list(filter(lambda showing_date: showing_date.location == location and showing_date.movie.is_ov, dates_created))
-            message = 'Hello!\n\nStarmovie {} has added new showing dates for movies in English!\n\n'.format(location.location)
+            message = 'Hello!\n\r\n\rStarmovie {} has added new showing dates for movies in English!\n\r\n\r'.format(location.location)
 
             # If there are no showing dates left, skip to the next location.
             if not for_location:
@@ -110,7 +110,7 @@ class Command(BaseCommand):
 
             # Add a line for every showing date.
             for date in for_location:
-                message += 'Title: {}\nDate: {}\nURL: {}\n\n'.format(date.movie.title, date.date, date.details_url)
+                message += 'Title: {}\n\rDate: {}\n\rURL: {}\n\r----------------------------\n\r'.format(date.movie.title, date.date, date.details_url)
 
             with mail.get_connection() as connection:
                 for user in users:
