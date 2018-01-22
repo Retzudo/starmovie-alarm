@@ -6,6 +6,7 @@ import requests
 from bs4 import BeautifulSoup
 from django.conf import settings
 from django.contrib.auth import get_user_model
+from django.core import mail
 from django.core.mail import send_mass_mail
 from django.core.management.base import BaseCommand
 
@@ -84,33 +85,44 @@ class Command(BaseCommand):
         if not dates_created:
             return
 
+        messages_to_send = []
+
         for location in Starmovie.objects.all():
+            # Get all users for this location who have an email address and want to receive alerts.
             users = get_user_model().objects.filter(
                 settings__receive_alert_emails=True,
                 settings__favourite_location=location,
                 email__isnull=False,
             )
+            # If there are no users, skip to the next location
             if len(users) < 1:
                 continue
 
-            for_location = list(filter(lambda x: x.location == location, dates_created))
-            message = 'Hello!\n\nStarmovie {} is showing (a) new movie(s) in English!\n\n'.format(location.location)
+            # Filter created showing dates by this location and OV only.
+            for_location = list(filter(lambda showing_date: showing_date.location == location and showing_date.movie.is_ov, dates_created))
+            message = 'Hello!\n\nStarmovie {} has added new showing dates for movies in English!\n\n'.format(location.location)
 
+            # If there are no showing dates left, skip to the next location.
             if not for_location:
-                return
+                continue
 
             self.stdout.write('Sending notification for {} movie(s) to {} users with an e-mail address'.format(len(for_location), len(users)))
 
+            # Add a line for every showing date.
             for date in for_location:
-                if date.movie.is_ov:
-                    message += 'Title: {}\nDate: {}\nURL: {}\n\n'.format(date.movie.title, date.date, date.details_url)
+                message += 'Title: {}\nDate: {}\nURL: {}\n\n'.format(date.movie.title, date.date, date.details_url)
 
-            send_mass_mail(((
-                'New OV Movies!',
-                message,
-                'noreply@starmovie.retzudo.com',
-                [user.email for user in users],
-            ),))
+            for user in users:
+                message = mail.EmailMessage(
+                    'New OV Movies!',
+                    message,
+                    'Starmovie Alert <noreply@starmovie.retzudo.com>',
+                    user.email
+                )
+                messages_to_send.append(message)
+
+        connection = mail.get_connection()
+        connection.send_messages(messages_to_send)
 
     def handle(self, *args, **options):
         dates_created = []
