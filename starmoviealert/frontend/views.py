@@ -2,8 +2,10 @@ from datetime import datetime
 
 import pytz
 from django.conf import settings
+from django.contrib import messages
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.messages.views import SuccessMessageMixin
 from django.shortcuts import render, get_object_or_404
 from django.views.generic import UpdateView, TemplateView, FormView
 
@@ -38,10 +40,11 @@ class ProfileView(LoginRequiredMixin, TemplateView):
     template_name = 'frontend/profile.html'
 
 
-class SettingsView(LoginRequiredMixin, UpdateView):
+class SettingsView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
     template_name = 'frontend/settings.html'
     form_class = forms.SettingsForm
     success_url = '/accounts/settings'
+    success_message = 'Settings saved!'
 
     def get_object(self, queryset=None):
         return self.request.user.settings

@@ -62,6 +62,8 @@
 
                 {% csrf_token %}
             </form>
+
+            {% include 'frontend/_messages.html' %}
         </div>
     </section>
 {% endblock %}

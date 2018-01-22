@@ -1,0 +1,20 @@
+{% if messages %}
+    {% for message in messages %}
+        <div class="notification {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}is-danger{% endif %}{% if message.level == DEFAULT_MESSAGE_LEVELS.INFO %}is-info{% endif %}{% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}is-success{% endif %}{% if message.level == DEFAULT_MESSAGE_LEVELS.WARNING %}is-warning{% endif %}">
+            <button class="delete"></button>
+            {{ message }}
+        </div>
+    {% endfor %}
+    <script>
+        (function () {
+            var $deleteButtons = document.querySelectorAll('.delete');
+            for (var i = 0; i < $deleteButtons.length; i++) {
+                $deleteButtons[i].addEventListener('click', function (event) {
+                    if (event.target.parentNode.classList.contains('notification')) {
+                        event.target.parentNode.remove();
+                    }
+                });
+            }
+        }());
+    </script>
+{% endif %}
