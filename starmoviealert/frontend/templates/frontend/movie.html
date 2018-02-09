@@ -1,0 +1,26 @@
+{% extends 'frontend/master.html' %}
+
+{% block body %}
+    <section class="section">
+        <div class="container">
+            <div class="columns">
+                <div class="column is-one-third is-hidden-mobile">
+                    <img src="{{ movie.poster_url }}" alt="{{ movie.title }} Poster">
+                </div>
+                <div class="column is-two-thirds">
+                    <ul>
+                        {% for showing_date in movie.showing_dates.all %}
+                            {% if starmovie %}
+                                {% if showing_date.location.location == starmovie.location  %}
+                                    <li><time datetime="{{ showing_date.date|date:'c' }}">{{ showing_date.date }}</time></li>
+                                {% endif %}
+                            {% else %}
+                                <li><strong>{{ showing_date.location }}:</strong> <time datetime="{{ showing_date.date|date:'c' }}">{{ showing_date.date }}</time></li>
+                            {% endif %}
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

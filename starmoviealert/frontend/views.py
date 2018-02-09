@@ -2,7 +2,6 @@ from datetime import datetime
 
 import pytz
 from django.conf import settings
-from django.contrib import messages
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
@@ -32,7 +31,21 @@ def show_movies(request, location):
         movies = movies.filter(is_ov=True)
 
     return render(request, 'frontend/starmovie.html', context={
-        'movies': movies
+        'movies': movies,
+        'location': location
+    })
+
+
+def movie_details(request, location=None, movie_id=None):
+    movie = get_object_or_404(Movie, pk=movie_id)
+    if location:
+        starmovie = get_object_or_404(Starmovie, location=location)
+    else:
+        starmovie = None
+
+    return render(request, 'frontend/movie.html', context={
+        'movie': movie,
+        'starmovie': starmovie
     })
 
 

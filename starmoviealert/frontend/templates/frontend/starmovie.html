@@ -19,6 +19,10 @@
         line-height: 60px;
         font-size: 1.4em;
     }
+
+    .card a {
+        outline: none;
+    }
     </style>
 {% endblock %}
 
@@ -29,19 +33,21 @@
                 {% for movie in movies %}
                     <div class="column is-3">
                         <div class="card">
-                            <div class="card-image">
-                                {% if movie.is_ov and not user.settings.only_show_ov%}
-                                    <div class="ov-badge">
-                                        OV
-                                    </div>
-                                {% endif %}
-                                <figure class="image">
-                                    <img src="{{ movie.poster_url }}" alt="{{ movie.title }} Poster">
-                                </figure>
-                            </div>
-                            <div class="card-content">
-                                {{ movie.title }}
-                            </div>
+                            <a href="{% url 'movie_details' location=location movie_id=movie.pk %}">
+                                <div class="card-image">
+                                    {% if movie.is_ov and not user.settings.only_show_ov%}
+                                        <div class="ov-badge">
+                                            OV
+                                        </div>
+                                    {% endif %}
+                                    <figure class="image">
+                                        <img src="{{ movie.poster_url }}" alt="{{ movie.title }} Poster">
+                                    </figure>
+                                </div>
+                                <div class="card-content">
+                                    {{ movie.title }}
+                                </div>
+                            </a>
                         </div>
                     </div>
                 {% endfor %}
