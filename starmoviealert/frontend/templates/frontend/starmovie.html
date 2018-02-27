@@ -35,7 +35,7 @@
                         <div class="card">
                             <a href="{% url 'movie_details' location=location movie_id=movie.pk %}">
                                 <div class="card-image">
-                                    {% if movie.is_ov and not user.settings.only_show_ov%}
+                                    {% if movie.is_ov and not show_ov_only %}
                                         <div class="ov-badge">
                                             OV
                                         </div>
@@ -52,6 +52,12 @@
                     </div>
                 {% endfor %}
             </div>
+
+            {% if show_ov_only %}
+                <p class="has-text-grey is-size-7 is-italic">
+                    Showing {{ ov_movies }} OV version of {{ all_movies }} movies total, as per your <a href="{% url 'settings' %}">settings</a>. Temporarily <a href="?showall=yes">show all</a>   .
+                </p>
+            {% endif %}
         </div>
     </section>
 {% endblock %}

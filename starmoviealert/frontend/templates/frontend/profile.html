@@ -3,6 +3,63 @@
 {% block body %}
     <section class="section">
         <div class="container">
+            <form action="{% url 'profile' %}" method="post">
+                <div class="field is-horizontal">
+                    <div class="field-label is-normal">
+                        <label for="{{ form.email.id_for_label }}" class="label">{{ form.email.label }}</label>
+                    </div>
+                    <div class="field-body">
+                        <div class="field">
+                            <div class="control">
+                                <input type="email" class="input" placeholder="jane.doe@example.com" name="{{ form.email.name }}" id="{{ form.email.auto_id }}" {% if form.email.value %}value="{{ form.email.value }}{% endif %}">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="field is-horizontal">
+                    <div class="field-label is-normal">
+                        <label for="{{ form.first_name.id_for_label }}" class="label">{{ form.first_name.label }}</label>
+                    </div>
+                    <div class="field-body">
+                        <div class="field">
+                            <div class="control">
+                                <input type="text" class="input" placeholder="Jane" name="{{ form.first_name.name }}" id="{{ form.first_name.auto_id }}" {% if form.first_name.value %}value="{{ form.first_name.value }}{% endif %}">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="field is-horizontal">
+                    <div class="field-label is-normal">
+                        <label for="{{ form.last_name.id_for_label }}" class="label">{{ form.last_name.label }}</label>
+                    </div>
+                    <div class="field-body">
+                        <div class="field">
+                            <div class="control">
+                                <input type="text" class="input" placeholder="Doe" name="{{ form.last_name.name }}" id="{{ form.last_name.auto_id }}" {% if form.last_name.value %}value="{{ form.last_name.value }}{% endif %}">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="field is-horizontal">
+                    <div class="field-label"></div>
+                    <div class="field-body">
+                        <div class="field">
+                            <div class="control">
+                                <button class="button is-link">Save</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {% csrf_token %}
+            </form>
+
+            {% include 'frontend/_messages.html' %}
+
+            <hr>
+
             <a class="button" href="{% url 'settings' %}">
                 <span class="icon">
                     <i class="fa fa-gear"></i>

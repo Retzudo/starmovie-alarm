@@ -6,7 +6,7 @@ from django.contrib.auth import login, authenticate
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.shortcuts import render, get_object_or_404
-from django.views.generic import UpdateView, TemplateView, FormView
+from django.views.generic import UpdateView, FormView
 
 from core.models import Starmovie, Movie
 from frontend import forms
@@ -21,18 +21,25 @@ def index(request):
 
 def show_movies(request, location):
     get_object_or_404(Starmovie, location=location)
+    show_ov_only = request.user.is_authenticated and request.user.settings.only_show_ov and not request.GET.get('showall')
 
-    movies = Movie.objects.filter(
+    all_movies = Movie.objects.filter(
         showing_dates__date__gte=datetime.now(pytz.timezone(settings.TIME_ZONE)),
         showing_dates__location__location__iexact=location,
     ).distinct().order_by('-is_ov', 'title')
+    ov_movies = all_movies.filter(is_ov=True)
 
-    if request.user.is_authenticated and request.user.settings.only_show_ov:
-        movies = movies.filter(is_ov=True)
+    if show_ov_only:
+        movies = ov_movies
+    else:
+        movies = all_movies
 
     return render(request, 'frontend/starmovie.html', context={
         'movies': movies,
-        'location': location
+        'location': location,
+        'all_movies': all_movies.count(),
+        'ov_movies': ov_movies.count(),
+        'show_ov_only': show_ov_only,
     })
 
 
@@ -49,8 +56,14 @@ def movie_details(request, location=None, movie_id=None):
     })
 
 
-class ProfileView(LoginRequiredMixin, TemplateView):
+class ProfileView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
     template_name = 'frontend/profile.html'
+    form_class = forms.ProfileForm
+    success_url = '/accounts/profile'
+    success_message = 'Settings saved!'
+
+    def get_object(self, queryset=None):
+        return self.request.user
 
 
 class SettingsView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
