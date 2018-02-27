@@ -15,7 +15,7 @@ from frontend.forms import UserCreationForm
 
 def index(request):
     return render(request, 'frontend/index.html', context={
-        'starmovies': Starmovie.objects.all()
+        'starmovies': Starmovie.objects.all().order_by('location')
     })
 
 

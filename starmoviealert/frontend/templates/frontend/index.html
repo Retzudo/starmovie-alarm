@@ -2,14 +2,12 @@
 
 {% block body %}
     <section class="section">
-        <div class="container">
-            <div class="columns is-multiline">
+        <div class="container has-text-centered">
+            <ul>
                 {% for starmovie in starmovies %}
-                    <div class="column is-one-third">
-                        <a href="{% url 'show_movies' location=starmovie.location %}">{{ starmovie.location }}</a>
-                    </div>
+                    <li><a href="{% url 'show_movies' location=starmovie.location %}">Starmovie <strong>{{ starmovie.location }}</strong></a></li>
                 {% endfor %}
-            </div>
+            </ul>
         </div>
     </section>
 {% endblock %}

@@ -3,7 +3,12 @@
 {% block body %}
     <section class="section">
         <div class="container">
-            <a href="{% url 'settings' %}">Settings</a>
+            <a class="button" href="{% url 'settings' %}">
+                <span class="icon">
+                    <i class="fa fa-gear"></i>
+                </span>
+                <span>Settings</span>
+            </a>
         </div>
     </section>
 {% endblock %}
