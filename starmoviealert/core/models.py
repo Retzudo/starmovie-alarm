@@ -28,6 +28,12 @@ class Movie(models.Model):
     def __str__(self):
         return self.title
 
+    @property
+    def locations(self):
+        return Starmovie.objects.filter(
+            pk__in=self.showing_dates.all().values_list('location', flat=True)
+        )
+
 
 class ShowingDate(models.Model):
     movie = models.ForeignKey(Movie, on_delete=models.CASCADE, related_name='showing_dates')

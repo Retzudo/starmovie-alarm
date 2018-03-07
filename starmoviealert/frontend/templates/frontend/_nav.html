@@ -11,6 +11,16 @@
 
     <div class="navbar-menu" id="navbar-menu">
         <div class="navbar-end">
+            <div class="navbar-item">
+                <form action="{% url 'search' %}" method="get">
+                    <p class="control has-icons-left">
+                        <input type="search" placeholder="Search" class="input is-rounded" name="q">
+                        <span class="icon is-left">
+                            <i class="fa fa-search"></i>
+                        </span>
+                    </p>
+                </form>
+            </div>
             {% if user.is_authenticated %}
                 {% if user.settings.favourite_location %}
                     <a href="{% url 'show_movies' location=user.settings.favourite_location.location %}" class="navbar-item" >

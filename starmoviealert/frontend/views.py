@@ -19,6 +19,18 @@ def index(request):
     })
 
 
+def search(request):
+    query = request.GET.get('q')
+    movies = Movie.objects.all()
+
+    if query:
+        movies = movies.filter(title__icontains=query)
+
+    return render(request, 'frontend/search.html', {
+        'movies': movies
+    })
+
+
 def show_movies(request, location):
     get_object_or_404(Starmovie, location=location)
     show_ov_only = request.user.is_authenticated and request.user.settings.only_show_ov and not request.GET.get('showall')

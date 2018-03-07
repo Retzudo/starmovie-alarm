@@ -1,0 +1,25 @@
+{% extends 'frontend/master.html' %}
+
+{% block body %}
+    <section class="section">
+        <div class="container">
+            <div class="content">
+                <ul>
+                    {% for movie in movies %}
+                        <li>
+                            {{ movie }}<br>
+                            Showing in:
+                            <ul>
+                                {% for location in movie.locations.all %}
+                                    <li>{{ location }}</li>
+                                {% endfor %}
+                            </ul>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="columns is-multiline">
+            </div>
+        </div>
+    </section>
+{% endblock %}
