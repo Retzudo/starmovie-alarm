@@ -7,13 +7,11 @@
                 <ul>
                     {% for movie in movies %}
                         <li>
-                            {{ movie }}<br>
-                            Showing in:
-                            <ul>
-                                {% for location in movie.locations.all %}
-                                    <li>{{ location }}</li>
-                                {% endfor %}
-                            </ul>
+                            {{ movie }} &mdash; Showing in:
+                            {% for location in movie.locations.all %}
+                                <a href="{% url 'movie_details' location=location.location movie_id=movie.pk %}">{{ location.location }}</a>
+                                {% if not forloop.last %}, {% endif %}
+                            {% endfor %}
                         </li>
                     {% endfor %}
                 </ul>

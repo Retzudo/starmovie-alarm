@@ -21,7 +21,9 @@ def index(request):
 
 def search(request):
     query = request.GET.get('q')
-    movies = Movie.objects.all()
+    movies = Movie.objects.filter(
+        showing_dates__date__gte=datetime.now(pytz.timezone(settings.TIME_ZONE)),
+    ).distinct()
 
     if query:
         movies = movies.filter(title__icontains=query)
@@ -41,13 +43,8 @@ def show_movies(request, location):
     ).distinct().order_by('-is_ov', 'title')
     ov_movies = all_movies.filter(is_ov=True)
 
-    if show_ov_only:
-        movies = ov_movies
-    else:
-        movies = all_movies
-
     return render(request, 'frontend/starmovie.html', context={
-        'movies': movies,
+        'movies': all_movies if not show_ov_only else ov_movies,
         'location': location,
         'all_movies': all_movies.count(),
         'ov_movies': ov_movies.count(),
