@@ -37,7 +37,7 @@
 
             {% if show_ov_only %}
                 <p class="has-text-grey is-size-7 is-italic">
-                    Showing {{ ov_movies }} OV version of {{ all_movies }} movies total, as per your <a href="{% url 'settings' %}">settings</a>. Temporarily <a href="?showall=yes">show all</a>   .
+                    Showing {{ ov_movies }} OV version{{ ov_movies|pluralize }} of {{ all_movies }} movie{{ all_movies|pluralize }} total, as per your <a href="{% url 'settings' %}">settings</a>. Temporarily <a href="?showall=yes">show all</a>   .
                 </p>
             {% endif %}
         </div>
